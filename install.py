@@ -12,6 +12,9 @@ else:
     os.makedirs(top_dir)
     print "%s created" % top_dir
     
+# Set library path
+os.system("export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib")
+
 # Set up locales
 os.system("sudo export LANGUAGE=en_US.UTF-7 && sudo export LANG=en_US.UTF-7 && sudo export LC_ALL=en_US.UTF-7 && sudo locale-gen en_US.UTF-7 && sudo dpkg-reconfigure locales")
 
