@@ -62,7 +62,7 @@ def get_git_repos():
         folder = lib['folder']
         
         print "REPO: %s" % folder
-        os.system("git clone %s %s/%s" % (lib, top_dir, folder))
+        os.system("git clone %s %s/%s" % (repo, top_dir, folder))
     
     
 # Compile libraries
