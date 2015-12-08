@@ -11,38 +11,28 @@ if os.path.exists(top_dir):
 else:
     os.makedirs(top_dir)
     print "%s created" % top_dir
-    
-# Set library path
-os.system("export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib")
 
 # Set up locales
 os.system("sudo export LANGUAGE=en_US.UTF-7 && sudo export LANG=en_US.UTF-7 && sudo export LC_ALL=en_US.UTF-7 && sudo locale-gen en_US.UTF-7 && sudo dpkg-reconfigure locales")
 
 # Install autoreconf
 print "Installing autoreconf..."
-os.system("sudo apt-get install -y dh-autoreconf")
+os.system("sudo apt-get -y install dh-autoreconf")
 
 # Install dependencies that can be obtained through apt-get
 os.system("sudo apt-get install libpopt-dev")
 
+# Install gphoto2
+os.system("sudo apt-get -y install gphoto2")
+
 libraries = [
     {
-        "repo": "https://github.com/gphoto/libgphoto2.git",
-        "folder": "libgphoto2",
-        "opts": ""
-    },
-    {
-        "repo": "https://github.com/gphoto/gphoto2", 
-        "folder": "gphoto2",
-        "opts": ""
-    },
-    {
-        "repo": "git://git.videolan.org/x264", 
+        "repo": "git://git.videolan.org/x264",
         "folder": "x264",
         "opts": "--host=arm-unknown-linux-gnueabi --enable-static --disable-opencl"
     },
     {
-        "repo": "git://source.ffmpeg.org/ffmpeg.git", 
+        "repo": "git://source.ffmpeg.org/ffmpeg.git",
         "folder": "ffmpeg",
         "opts": "--arch=armel --target-os=linux --enable-gpl --enable-libx264 --enable-nonfree"
     }
