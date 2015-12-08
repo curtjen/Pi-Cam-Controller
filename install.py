@@ -1,94 +1,91 @@
-#!/usr/local/bin/python
+#!/usr/bin/python
 
-# Import 'os' library for using operating system commandments
 import os
 
-# Create main folder for storing repos
+# Create top level directory for storing repos
 user_dir = os.path.expanduser('~')
-top_dir = "%s/git_repos" % user_dir
+top_dir = '%s/git_repos' % user_dir
 
 if os.path.exists(top_dir):
     print "%s exists" % top_dir
 else:
     os.makedirs(top_dir)
     print "%s created" % top_dir
-
-
+    
 # Set up locales
 os.system("sudo export LANGUAGE=en_US.UTF-7 && sudo export LANG=en_US.UTF-7 && sudo export LC_ALL=en_US.UTF-7 && sudo locale-gen en_US.UTF-7 && sudo dpkg-reconfigure locales")
 
 # Install autoreconf
-os.system("sudo apt-get install dh-autoreconf")
+print "Installing autoreconf..."
+os.system("sudo apt-get install -y dh-autoreconf")
 
-# Install dependencies that can be through apt-get
+# Install dependencies that can be obtained through apt-get
 os.system("sudo apt-get install libpopt-dev")
 
-
-# The list of libraries (list in order of dependency with dependents first)
 libraries = [
     {
-        "name": "https://github.com/gphoto/libgphoto2.git",
+        "repo": "https://github.com/gphoto/libgphoto2.git",
         "folder": "libgphoto2",
-        "ops": ""
+        "opts": ""
     },
     {
-        "name": "https://github.com/gphoto/gphoto2",
+        "repo": "https://github.com/gphoto/gphoto2", 
         "folder": "gphoto2",
-        "ops": ""
+        "opts": ""
     },
     {
-        "name": "git://git.videolan.org/x264",
+        "repo": "git://git.videolan.org/x264", 
         "folder": "x264",
-        "ops": "--host=arm-unknown-linux-gnueabi --enable-static --disable-opencl"
+        "opts": "--host=arm-unknown-linux-gnueabi --enable-static --disable-opencl"
     },
     {
-        "name": "git://source.ffmpeg.org/ffmpeg.git",
+        "repo": "git://source.ffmpeg.org/ffmpeg.git", 
         "folder": "ffmpeg",
-        "ops": "--arch=armel --target-os=linux --enable-gpl --enable-libx264 --enable-nonfree"
+        "opts": "--arch=armel --target-os=linux --enable-gpl --enable-libx264 --enable-nonfree"
     }
 ]
-
-# Run the compile steps
+    
+    
+# Run the compilation steps
 def run_compile(lib):
-    ops = lib['ops']
-
-    # Run configure > Run make as sudo > Run make install as sudo
-    os.system("./configure %s && sudo make && sudo make install" % ops)
-
-
-# Download/Clone the things
+    os.system("pwd")
+    opts = lib['opts']
+    
+    # Run configure and make install
+    os.system("./configure %s && sudo make && sudo make install" % opts)
+    
+    
+# Clone/download all repos
 def get_git_repos():
     for lib in libraries:
-        name   = lib['name']
+        repo = lib['repo']
         folder = lib['folder']
-        dir_path = "%s/%s" % (top_dir, folder)
-        os.system("git clone %s %s" % (name, dir_path))
-
-
-# Compile the libraries
+        
+        print "REPO: %s" % folder
+        os.system("git clone %s %s/%s" % (lib, top_dir, folder))
+    
+    
+# Compile libraries
 def compile_libs():
     for lib in libraries:
-        folder   = lib['folder']
-        dir_path = "%s/%s" % (top_dir, folder)
-        os.chdir(dir_path)
-
+        folder = lib['folder']
+        
+        # cd into directory
+        os.chdir("%s/%s" % (top_dir, folder))
+        
         if os.path.exists("configure"):
-            print "%s/configure exists!" % dir_path
-
+            print '"configure" exists: %s' % folder
             run_compile(lib)
-
+            
         elif os.path.exists("configure.ac"):
-            print "%s/configure.ac exists!" % dir_path
-
+            print '"configure.ac" exists: %s' % folder
             os.system("autoreconf -is")
             run_compile(lib)
-
+            
         else:
-            print "configure does not exist at %s." % dir_path
-
-
-# Run steps
-# Step 1: Download the things
+            print "configure does not exist for %s" % folder
+            
+# Step 1: Clone the repos
 get_git_repos()
 
 # Step 2: Compile the libraries
