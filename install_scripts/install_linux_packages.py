@@ -13,7 +13,7 @@ else:
     print "%s created" % top_dir
 
 # Set up locales
-os.system("sudo export LANGUAGE=en_US.UTF-7 && sudo export LANG=en_US.UTF-7 && sudo export LC_ALL=en_US.UTF-7 && sudo locale-gen en_US.UTF-7 && sudo dpkg-reconfigure locales")
+os.system("export LANGUAGE=en_US.UTF-8 && export LANG=en_US.UTF-8 && sudo export LC_ALL=en_US.UTF-8 && sudo locale-gen en_US.UTF-8 && sudo dpkg-reconfigure locales")
 
 # Install autoreconf
 print "Installing autoreconf..."
