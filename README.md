@@ -19,6 +19,9 @@ Run `python install_linux_packages.py` from the project's directory. This will c
 ## Usage
 
 After installation, you should be able to connect your digital camera and run via command line.
+After installation, you should be able to connect your digital camera but you will need to make sure the camera is connect and not mounted.
+
+After plugging in and turning on your digital camera, your camera will mount to your Raspberry Pi reserve a running process for it. Unfortunately, this inhibits mosts commands to be run through gphoto2. To do this, run the unmount.py file from the `controls` directory. e.g. `python ./controls/unmount-cam.py`
 
 You can see if your digital camera is supported here: [Projects :: libgphoto2 :: supported cameras](http://gphoto.sourceforge.net/proj/libgphoto2/support.php)
 
