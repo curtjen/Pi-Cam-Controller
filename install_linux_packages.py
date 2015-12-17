@@ -25,6 +25,9 @@ os.system("sudo apt-get install libpopt-dev")
 # Install gphoto2
 os.system("sudo apt-get -y install gphoto2")
 
+# Install imagemagick
+os.system("sudo apt-get install imagemagick")
+
 libraries = [
     {
         "repo": "git://git.videolan.org/x264",
